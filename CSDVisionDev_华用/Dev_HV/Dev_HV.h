@@ -1,0 +1,1517 @@
+#pragma once
+ /*******************************************************************************
+**
+** 文件名：CDevHV.h
+**
+** 创建者：粟明
+**
+** 创建时间：2015.1.16
+**
+** 最后更新：2015.1.16
+** 
+** 版本： ver 1.00.00
+** 
+** 模块主要功能：
+       封装华用相机，主要实现：
+
+	   1, 相机按照名字初始化
+
+	   2，相机回调函数
+
+	   3，图像翻转
+
+	   4，帧率，增益，快门等设置和获取相机的属性
+
+	   5，触发开关，实时显示
+
+	   等
+
+**
+**  模块的使用：
+       1，使用前线初始化库
+	   
+**
+**
+    历史记录
+
+*******************************************************************************/
+
+#if !defined(_DEV_API_HV_SMCVVEDIO_H_)
+#define _DEV_API_HV_SMCVVEDIO_H_
+
+#if SCVDEV_USE_HV
+
+#include "Dev_HV_inlcude/HVGigE_WP.h"
+#include "../DeviceOrderInfo.h"
+#include "afxmt.h"
+
+class CDevHV
+{
+public:
+	CDevHV(void);
+	~CDevHV(void);
+
+	/******************************************************************************
+	* Function:	API_HV_EnumerateDevice
+	* Description: 设备枚举
+	* Format:
+	*     HRESULT API_HV_EnumerateDevice(pHVGigE_Dev_i * pDev, int * nDevCount) ;
+	* Params:
+	*     pHVGigE_Dev_i * pDev: 获取的设备信息
+	*     int * nDevCount: 获取设备个数
+	* Return: 
+	*     API_HV_SUCCESS: 成功;   API_HV_NO_SUCH_DEVICE: 未找到
+	******************************************************************************/
+	HRESULT  API_HV_EnumerateDevice(pHVGigE_Dev_i * pDev, int * nDevCount);
+
+	/******************************************************************************
+	* Function:	API_HV_OpenDevice
+	* Description: 打开设备
+	* Format:
+	*     HRESULT API_HV_OpenDevice(int nDevId) ;
+	* Params:
+	*     int nId: 设备索引
+	* Return: 
+	*     API_HV_SUCCESS: 成功;   API_HV_NO_SUCH_DEVICE: 未找到
+	******************************************************************************/
+	HRESULT  API_HV_OpenDevice(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_DevCapInit
+	* Description: 设备捕捉初始化
+	* Format:
+	*     HRESULT API_HV_DevCapInit(int nDevId, LPCSTR lpFileName = NULL) ;
+	* Params:
+	*     int nDevId
+	*	  LPCSTR lpFileName: 配置文件保存路径，当为空时，默认为当前目录；
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_DevCapInit(int nDevId, LPCSTR lpFileName = NULL);
+
+	/******************************************************************************
+	* Function:	API_HV_DevCapRelease
+	* Description: 资源释放
+	* Format:
+	*     HRESULT API_HV_DevCapRelease(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     void
+	******************************************************************************/
+	void     API_HV_DevCapRelease(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetCallBack
+	* Description: 设置回调函数
+	* Format:
+	*     HRESULT API_HV_SetCallBack(USER_CALLBACK_PROC pCallBack,int nDevId) ;
+	* Params:
+	*     USER_CALLBACK_PROC pCallBack: 回调函数地址
+	* Return: 
+	*     void
+	******************************************************************************/
+	void     API_HV_SetCallBack(USER_CALLBACK_PROC pCallBack,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_StartCapture
+	* Description: 开始图像捕获
+	* Format:
+	*     HRESULT API_HV_StartCapture(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_StartCapture(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SuspendCapture
+	* Description: 挂起/恢复 Data Thread 和 Show Thread.
+	* Format:
+	*     HRESULT API_HV_SuspendCapture(BOOL bSuspend,int nDevId);
+	* Params:
+	*     BOOL bSuspend: 1 for capture and show suspend; 0 for capture and show resume;
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_SuspendCapture(BOOL bSuspend,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_StopCapture
+	* Description: 停止图像捕获
+	* Format:
+	*     HRESULT API_HV_StopCapture(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_StopCapture(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_ShowControlPage
+	* Description: 打开控制属性对话框
+	* Format:
+	*     HRESULT API_HV_ShowControlPage(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	HRESULT  API_HV_ShowControlPage(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_ShowRWPage
+	* Description: 打开读/写寄存器对话框
+	* Format:
+	*     HRESULT API_HV_ShowRWPage(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	HRESULT  API_HV_ShowRWPage(int nDevId);
+
+	HRESULT  API_HV_ShowSnapshotPage(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetFrameRate
+	* Description: 获取帧率
+	* Format:
+	*     HRESULT API_HV_GetFrameRate(double & nRate, int nDevId) ;
+	* Params:
+	*     double & nRate: 帧率
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	HRESULT  API_HV_GetFrameRate(double & nRate, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetTestInfo
+	* Description: 获取测试参数
+	* Format:
+	*     HRESULT API_HV_GetTestInfo(int & nImgCount,int & nPacketMissing, int nDevId) ;
+	* Params:
+	*     int & nImgCount: 图像总帧数
+	*	  int & nPacketMissing： 丢包个数
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	HRESULT  API_HV_GetTestInfo(int & nImgCount,int & nPacketMissing,int &nFrameMissing, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetParamInfo
+	* Description: 获取参数信息
+	* Format:
+	*     HRESULT API_HV_GetParamInfo(int nType, PVOID* ppParamInfoStruct,int nDevId) ;
+	* Params:
+	*     int nType: 需获取信息的类型（VIDEO_INFO）
+	*     PVOID* ppParamInfoStruct: 获取的参数信息
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	HRESULT  API_HV_GetParamInfo(int nType, PVOID* ppParamInfoStruct,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetFrameBuffer
+	* Description: 获取一帧图像数据
+	* Format:
+	*     HRESULT API_HV_GetFrameBuffer(long & lBufSize, LPBYTE * pBuf, int & nFrmWidth, int & nFrmHeight, int nDevId) ;
+	* Params:
+	*     long & lBufSize: 图像缓存大小
+	*     LPBYTE * pBuf: 图像缓存数据
+	*     int nFrmWidth: 图像宽
+	*     int nFrmHeight: 图像高
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	HRESULT  API_HV_GetFrameBuffer(long & lBufSize, LPBYTE * pBuf, int & nFrmWidth, int & nFrmHeight, int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SaveImg
+	* Description: 保存一帧图像为.bmp文件
+	* Format:
+	*     HRESULT API_HV_SaveImg(LPBYTE pBuffer, LPCSTR lpFileName, const int nFrmWidth,
+	*						  const int nFrmHeight, const long lBufferSize, int nDevId)
+	* Params:
+	*     LPBYTE pBuffer: 图像数据Buffer指针
+	*     LPCTSTR lpFileName: 将要保存的bmp文件名
+	*     int nFrmWidth: 图像宽
+	*     int nFrmHeight: 图像高
+	*	  long lBufferSize: 图像数据Buffer的大小
+	* Return: 
+	*     出错时，返回错误字符串；否则，返回正确字串
+	******************************************************************************/
+	HRESULT  API_HV_SaveImg(LPBYTE pBuffer, LPCSTR lpFileName, const int nFrmWidth,
+												const int nFrmHeight, const long lBufSize, int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetErrorString
+	* Description: 获取错误字符串
+	* Format:
+	*     HRESULT API_HV_GetErrorString(LONG lError) ;
+	* Params:
+	*     LONG lError: 错误状态
+	* Return: 
+	*     错误字符串
+	******************************************************************************/
+	CHAR*    API_HV_GetErrorString(LONG lError);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetPreviewSnapMode()
+	* Description: 设置为连续预览(contionus)模式
+	* Format:
+	*     HRESULT API_HV_SetPreviewSnapMode(int nPreview, int nSnapMode)
+	* Params:
+	*		nPreview: 1 for preview mode; 
+	*				  0 for snapshot mode;
+	*		nSnapshot: snapshot mode, selected from 0 to 2, for both outer and inner
+	*				  trigger source.     
+	*
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+
+	HRESULT  API_HV_SetPreviewSnapMode(int nPreview, int nSnapMode,int nDevId);
+
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetPreviewSnapMode()
+	* Description: 得到当前为Preview或Snapshot
+	* Format:
+	*     HRESULT API_HV_GetPreviewSnapMode(HVGigE_PreSnap_State_i* psPreSnapStae,int nDevId)
+	* Params:
+	*		nPreview: 1 for preview mode; 0 for snapshot mode;
+	*		nSnapshot: snapshot mode, selected from 0 to 2;  
+	*		pPreSnapState:In\OUT; 
+	*					  pPreSnapState.nPreview = 1, pPreSnapState.nSnapMode=0, for preview;  
+	*					  pPreSnapState.nPreview = 0, pPreSnapState.nSnapMode=0-2, for snapshot of outer trigger source;
+	*
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+
+	HRESULT  API_HV_GetPreviewSnapMode(HVGigE_PreSnap_State_i* psPreSnapState,int nDevId);
+
+	/******************************************************************************
+	* Function:	void API_HV_GetMaxResolution()
+	* Description: 获取CIS最大分辨率的宽、高
+	* Format:
+	*     HRESULT  API_HV_GetMaxXResolution(int& nMaxWidth, int& nMaxHeight,int nDevId)
+	* Params:
+	*     nMaxWidth:  IN/OUT; Width for CIS max resolution;
+	*     nMaxHeight: IN/OUT; Height for CIS max resolution;
+	* Return: 
+	*     void
+	******************************************************************************/
+
+	HRESULT  API_HV_GetMaxResolution(int& nMaxWidth, int& nMaxHeight,int nDevId);
+
+	//========================== Image Mirror Control ======================================
+
+	/******************************************************************************
+	* Function:	API_HV_SetImageMirror()
+	* Description: 设置图像的镜像方向，有三种方式：水平、竖直、水平竖直。
+	* Format:
+	*     API_HV_SetImageMirror(int nMirror,int nDevId)
+	* Params:
+	*	  int nMirror： 设置图像的镜像方向，有三种方式：水平、竖直、水平竖直。
+	*					RowMirror=1; ColumnMirror=2; both=3;
+	* Return:
+	*     API_HV_SUCCESS:成功；
+	*     API_HV_REASONLESS_PARAMETER:参数超出范围；
+	*     API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_SetImageMirror(int nMirror,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetImageMirror()
+	* Description: 得到图像的镜像方式：水平、竖直、水平竖直。
+	* Format:
+	*     API_HV_GetImageMirror(int* pnMirror,int nDevId)
+	* Params:
+	*	  int* pnMirror: 返回当前的镜像方式。镜像方向，有三种方式：水平、竖直、水平竖直。
+	*					RowMirror=1; ColumnMirror=2; both=3;
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetImageMirror(int* pnMirror,int nDevId);
+
+	//========================= Image Resolution Control ===========================================
+
+	/******************************************************************************
+	* Function:	API_HV_GetResolution
+	* Description: 获取视频的分辨率
+	* Format:
+	*     HRESULT API_HV_GetResolution(HVGigE_Video_i* psResolution,int nDevId)
+	* Params:
+	*	  HVGigE_Video_i* psResolution: 图像的分辨率(sResolution)的返回值
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetResolution(HVGigE_Video_i* psResolution,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetResolution
+	* Description: 设置视频的分辨率
+	* Format:
+	*      HRESULT API_HV_SetResolution(HVGigE_Video_i sResolution, int nDevId)
+	* Params:
+	*	  HVGigE_Video_i sResolution：图像的分辨率(sResolution)
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_SetResolution(HVGigE_Video_i sResolution,int nDevId);
+
+	//========================= Image Color Control ===========================================
+	/******************************************************************************
+	* Function:	API_HV_GetImageColorStat()
+	* Description: 得到图像的彩色/灰度状态
+	* Format:
+	*     API_HV_GetImageColorStat(BOOL* pbColor,int nDevId)
+	* Params:
+	*	  BOOL* pbColor： 返回图像的彩色/灰度状态
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetImageColorStat(BOOL* pbColor,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetImageColorStat()
+	* Description: 设置图像的彩色/灰度状态
+	* Format:
+	*     API_HV_SetImageColorStat(BOOL bColor, int nDevId)
+	* Params:
+	*	  BOOL bColor： 设置图像的彩色/灰度状态
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_SetImageColorStat(BOOL bColor, int nDevId);
+
+	//========================= Image Gamma Control ===========================================
+
+	/******************************************************************************
+	* Function:	API_HV_GetImageGammaStat()
+	* Description: 得到图像的Gamma状态
+	* Format:
+	*     API_HV_GetImageGammaStat(BOOL* pbGamma,int nDevId)
+	* Params:
+	*	  BOOL* pbColor： 返回图像的Gamma状态
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetImageGammaStat(BOOL* pbGamma,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetImageGammaStat()
+	* Description: 设置图像的Gamma状态
+	* Format:
+	*     API_HV_SetImageGammaStat(BOOL bGamma, int nDevId)
+	* Params:
+	*	  BOOL bColor： 设置图像Gamma状态
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_SetImageGammaStat(BOOL bGamma, int nDevId);
+
+	//========================= Black Level Control ===========================================
+
+	/******************************************************************************
+	* Function:	API_HV_GetBlackLevelInfo
+	* Description: 获取BlackLevel参数信息
+	* Format:
+	*     HRESULT API_HV_GetBlackLevelInfo( HVGigE_Control_i* psBlackLevel,int nDevId)
+	* Params:
+	*	   HVGigE_Control_i* psBlackLevel: 返回sBlackLevel的参数值。
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetBlackLevelInfo( HVGigE_Control_i* psBlackLevel,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetBlackLevelInfo
+	* Description: 设置BlackLevel参数信息
+	* Format:
+	*     HRESULT API_HV_SetParamInfo(HVGigE_Control_i sBlackLevel,int nDevId)
+	* Params:
+	*	  HVGigE_Control_i sBlackLevel: 将要设置的BlackLevel的参数
+	* Return:
+	*      none
+	*    
+	******************************************************************************/
+
+	HRESULT  API_HV_SetBlackLevelInfo(HVGigE_Control_i sBlackLevel,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetBlackLevelEnable
+	* Description: 设置BlackLevel.bEnable的值
+	* Format:
+	*     HRESULT API_HV_SetBlackLevelEnable(BOOL bbEnable,int nDevId)
+	* Params:
+	*	  BOOL bEnable: 将要设置的BlackLevel.bEnable的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备  
+	******************************************************************************/
+
+	HRESULT  API_HV_SetBlackLevelEnable(BOOL bEnable,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetBlackLevelEnable
+	* Description: 获取BlackLevel.bEnable参数信息
+	* Format:
+	*     HRESULT API_HV_GetBlackLevelEnable(BOOL* pbEnable,int nDevId)
+	* Params:
+	*	  BOOL* pbEnable: BlackLevel.bEnable的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备  
+	******************************************************************************/
+
+	HRESULT  API_HV_GetBlackLevelEnable(BOOL* pbEnable,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetBlackLevelAuto
+	* Description: 设置BlackLevel.bAuto的值
+	* Format:
+	*     HRESULT API_HV_SetBlackLevelAuto(BOOL bAuto,int nDevId)
+	* Params:
+	*	  BOOL bAuto: 将要设置的sBlackLevel.bAuto的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备  
+	******************************************************************************/
+
+	HRESULT  API_HV_SetBlackLevelAuto(BOOL bAuto,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetBlackLevelAuto
+	* Description: 获取BlackLevel.bAuto的值
+	* Format:
+	*     HRESULT  API_HV_GetBlackLevelAuto(BOOL* pbAuto,int nDevId)
+	* Params:
+	*	  BOOL* pbAuto: BlackLevel.bAuto的返回值
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备  
+	******************************************************************************/
+
+
+	HRESULT  API_HV_GetBlackLevelAuto(BOOL* pbAuto,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetBlackLevelRange
+	* Description: 设置sBlackLevel.sRange的值
+	* Format:
+	*     HRESULT API_HV_SetBlackLevelRange(HVGigE_Range_i sRange,int nDevId)
+	* Params:
+	*	  HVGigE_Range_i sRange：BlackLevel的有效取值范围
+	* Return:
+	*      API_HV_INVALID_PARAM:无效的参数范围；
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备  
+	******************************************************************************/
+
+	HRESULT  API_HV_SetBlackLevelRange(HVGigE_Range_i sRange,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetBlackLevelRange
+	* Description: 获取BlackLevel的取值范围
+	* Format:
+	*     HRESULT  API_HV_GetBlackLevelRange(HVGigE_Range_i* psRange,int nDevId)
+	* Params:
+	*	  HVGigE_Range_i* psRange: BlackLevel的有效取值范围
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetBlackLevelRange(HVGigE_Range_i* psRange,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetBlackLevelValue
+	* Description: 设置sBlackLevel.nValueArr[]的值,本函数仅改变sBlackLevel.nValueArr[1:4]。
+	* Format:
+	*     HRESULT API_HV_SetBlackLevelValue(int* pnValue,int nDevId)
+	* Params:
+	*	  int* pnValue: 将要设置的BlackLevel.nValue[]的值
+	* Return:
+	*      API_HV_INVALID_PARAM:无效的参数范围；
+	*	   API_HV_SUCCESS: 成功设置sBlackLevel.nValueArr[1:4]的值
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	*
+	* NOTE: just set the Black Value from sBlackLevel.nValueArr[1] to sBlackLevel.nValueArr[4],
+	*       Have done NOTHING to sBlackLevel.nValueArr[0]。
+	*    
+	******************************************************************************/
+
+	HRESULT  API_HV_SetBlackLevelValue(int* pnValue,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetBlackLevelValue
+	* Description: 获取BlackLevel.nValue的值
+	* Format:
+	*     HRESULT API_HV_GetBlackLevelValue(int* pnValueArr,int nDevId)
+	* Params:
+	*	  int* pnValueArr: 返回sBlackLevel.nValueArr[0:5]的值(BlackLevel.nValueArr[0:5])
+	* Return:
+	*	  API_HV_SUCCESS:操作成功
+	*     API_HV_NO_SUCH_DEVICE： 没有对应的硬件
+	*    
+	******************************************************************************/
+
+	HRESULT  API_HV_GetBlackLevelValue(int* pnValueArr,int nDevId);
+
+
+	//========================== Gain Control =========================================================
+
+	/******************************************************************************
+	* Function:	API_HV_GetGainInfo
+	* Description: 获取Gain的参数信息
+	* Format:
+	*     HRESULT API_HV_GetGainInfo(HVGigE_Control_i* psGain,int nDevId)
+	* Params:
+	*     HVGigE_Control_i* psGain: Gain的返回值
+	* Return:
+	*	  API_HV_SUCCESS:操作成功
+	*     API_HV_NO_SUCH_DEVICE： 没有对应的硬件
+	******************************************************************************/
+
+	HRESULT  API_HV_GetGainInfo(HVGigE_Control_i* psGain,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetGainInfo
+	* Description: 设置Gain参数信息
+	* Format:
+	*     HRESULT API_HV_SetGainInfo(HVGigE_Control_i sGain,int nDevId)
+	* Params:
+	*	  HVGigE_Control_i sGain: 将要设置的Gain的参数
+	* Return:
+	*      HRESULT hResult: 状态返回
+	*    
+	******************************************************************************/
+
+	HRESULT  API_HV_SetGainInfo(HVGigE_Control_i sGain,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetGainEnable
+	* Description: 设置sGain.bEnable的值
+	* Format:
+	*     HRESULT API_HV_SetGainEnable(BOOL bEnable,int nDevId)
+	* Params:
+	*	  bEnable: 将要设置的sGain.bEnable的值
+	* Return:
+	*	  API_HV_SUCCESS:操作成功
+	*     API_HV_NO_SUCH_DEVICE： 没有对应的硬件
+	******************************************************************************/
+
+	HRESULT  API_HV_SetGainEnable(BOOL bEnable,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetGainEnable
+	* Description: 获取sGain.bEnable的值
+	* Format:
+	*     HRESULT API_HV_GetGainEnable(BOOL* pbEnable,int nDevId)
+	* Params:
+	*	  BOOL* bEnable：返回的sGain.bEnable的值
+	* Return:
+	*	  API_HV_SUCCESS:操作成功
+	*     API_HV_NO_SUCH_DEVICE： 没有对应的硬件
+	******************************************************************************/
+
+	HRESULT  API_HV_GetGainEnable(BOOL* pbEnable,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetGainAuto
+	* Description: 设置sGain.bAuto的值
+	* Format:
+	*     HRESULT API_HV_SetGainAuto(BOOL bAuto,int nDevId)
+	* Params:
+	*	  BOOL bAuto: 将要设置的sGain.bAuto的值
+	* Return:
+	*	  API_HV_SUCCESS:操作成功
+	*     API_HV_NO_SUCH_DEVICE： 没有对应的硬件
+	******************************************************************************/
+
+	HRESULT  API_HV_SetGainAuto(BOOL bAuto,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetGainAuto
+	* Description: 获取sGain.bAuto的值
+	* Format:
+	*     HRESULT API_HV_GetGainAuto(BOOL* pbAuto,int nDevId)
+	* Params:
+	*	  BOOL* pbAuto：返回sGain.bAuto的值
+	* Return:
+	*	  API_HV_SUCCESS:操作成功
+	*     API_HV_NO_SUCH_DEVICE： 没有对应的硬件
+	******************************************************************************/
+
+	HRESULT  API_HV_GetGainAuto(BOOL* pbAuto,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetGainRange
+	* Description: 设置sGain.sRange的值
+	* Format:
+	*     HRESULT API_HV_SetGainRange(HVGigE_Range_i sRange,int nDevId)
+	* Params:
+	*     HVGigE_Range_i sRange: Gain的有效取值范围
+	* Return:
+	*      API_HV_INVALID_PARAM:无效的参数范围；
+	*	   API_HV_SUCCESS: 成功；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetGainRange(HVGigE_Range_i sRange,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetGainRange
+	* Description: 获取sGain.sRange的值
+	* Format:
+	*     HRESULT API_HV_GetGainRange(HVGigE_Range_i* psRange,int nDevId)
+	* Params:
+	*	  HVGigE_Range_i* psRange：sGain.sRange的返回值
+	* Return:
+	*	   API_HV_SUCCESS: 成功；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetGainRange(HVGigE_Range_i* psRange,int nDevId);
+
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetGainValue
+	* Description: 设置sGain.nValue[0:4]的值
+	* Format:
+	*     HRESULT API_HV_SetGainValue(int* pnValueArr,int nDevId)
+	* Params:
+	*	  int* pValueArr: sGain.valueArr[0:4]的值
+	* Return:
+	*      API_HV_INVALID_PARAM:无效的参数范围；
+	*	   API_HV_SUCCESS: 成功设置Gain的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	* 
+	* NOTE: set gain value from sGain.nValue[0] to sGain.nValue[4].   
+	******************************************************************************/
+
+	HRESULT  API_HV_SetGainValue(int* pValueArr,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetGainValue
+	* Description: 获取sGain.nValue[0:4]的值
+	* Format:
+	*     HRESULT API_HV_GetGainValue(int* nValue,int nDevId)
+	* Params:
+	*	  int* nValue：返回sGain.nValueArr[0:4]的当前值，包括：
+	*				   Global Gain，G1 Gain，G2 Gain，R Gain, B Gain;
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Gain的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetGainValue(int* pnValue,int nDevId);
+
+	//======================== Exposure Control ======================================================
+
+	////////////////////////////////////////////////////////////////////////////////////
+	//			Exposure的参数设置与获取
+	//
+	/******************************************************************************
+	* Function:	API_HV_GetExposureInfo
+	* Description: 获取Exposure的参数信息
+	* Format:
+	*     HRESULT API_HV_GetExposureInfo(HVGigE_Control_i* psExposure,int nDevId)
+	* Params:
+	*	  HVGigE_Control_i* psExposur:返回Exposure的设置参数
+	* Return:
+	*	   API_HV_SUCCESS: 成功；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetExposureInfo(HVGigE_Control_i* psExposure,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetExposureInfo
+	* Description: 设置Exposure参数信息
+	* Format:
+	*     HRESULT API_HV_SetExposureInfo(HVGigE_Control_i sExposure,int nDevId)
+	* Params:
+	*	  HVGigE_Control_i sExposure: 将要设置的Exposure的参数信息
+	* Return:
+	*	   API_HV_SUCCESS: 成功；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetExposureInfo(HVGigE_Control_i sExposure,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetExposureEnable
+	* Description: 设置sExposure.bEnable的值
+	* Format:
+	*     HRESULT API_HV_SetExposureEnable(BOOL bEnable,int nDevId)
+	* Params:
+	*	  bEnable: 将要设置的sExposure.bEnable的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Gain的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetExposureEnable(BOOL bEnable,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetExposureEnable
+	* Description: 获取Exposure.bEnable参数信息
+	* Format:
+	*     BOOL API_HV_GetExposureEnable(BOOL* pbEnable,int nDevId)
+	* Params:
+	*	  BOOL* pbEnable: Exposure.bEnable的状态
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Gain的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetExposureEnable(BOOL* pbEnable,int nDevId);
+
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetExposureAuto
+	* Description: 设置Exposure.bAuto的值
+	* Format:
+	*     HRESULT API_HV_SetExposureAuto(BOOL bAuto,int nDevId)
+	* Params:
+	*	  BOOL bAuto: 将要设置的sExposure.bAuto的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetExposureAuto(BOOL bAuto,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetExposureAuto
+	* Description: 获取sExposure.bAuto的值
+	* Format:
+	*     HRESULT API_HV_GetExposure.bAuto(BOOL* pbAuto,int nDevId)
+	* Params:
+	*	  BOOL* pbAuto: sExposure.bAuto的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetExposureAuto(BOOL* pbAuto,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetExposureRange
+	* Description: 设置Exposure的有效取值范围，sExposure.sRange的值
+	* Format:
+	*     HRESULT API_HV_SetExposureRange(HVGigE_Range_i sRange,int nDevId)
+	* Params:
+	*	  HVGigE_Range_i sRange：Exposure的有效取值范围，sExposure.sRange的值
+	* Return:     
+	*      API_HV_INVALID_PARAM: 参数不在有效范围之内；
+	*	   API_HV_SUCCESS: 成功设置Exposure的范围
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetExposureRange(HVGigE_Range_i sRange,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetExposureRange
+	* Description: 获取Exposure的有效取值范围,sExposre.sRange的值
+	* Format:
+	*     HRESULT  API_HV_GetExposureRange(HVGigE_Range_i* psRange,int nDevId)
+	* Params:
+	*	  HVGigE_Range_i* psRange: Exposure的有效取值范围，sExposure.sRange的值
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的范围
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetExposureRange(HVGigE_Range_i* psRange,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetExposureValue
+	* Description: 设置Exposure.nValue的值
+	* Format:
+	*     HRESULT API_HV_SetExposureValue(int nValue,int nDevId)
+	* Params:
+	*	  nValue: Exposure的值(Exposure.nValue),单位为行数；
+	* Return:
+	*      API_HV_INVALID_PARAM: 参数不在有效范围之内；
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetExposureValue(int nValue,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetExposureValue
+	* Description: 获取Exposure.nValue的值
+	* Format:
+	*     HRESULT API_HV_GetExposureValue(int* pnValue,int nDevId)
+	* Params:
+	*	  int* pnValue:  Exposure的当前值(Exposure.nValue的值)，单位为行数
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetExposureValue(int* pnValue,int nDevId);
+
+
+	//======================== Snapshot Control ======================================================
+	///////////////////////////////////////////////////////////////////////////////////
+	//		Snapshot 的参数设置与获取
+	//
+
+	/******************************************************************************
+	* Function:	API_HV_GetSnapInfo
+	* Description: 获取Exposure的参数信息
+	* Format:
+	*     HRESULT API_HV_GetSnapInfo(HVGigE_SnapControl_i* psSnapControl, int nDevId)
+	* Params:
+	*	  HVGigE_SnapControl_i* psSnapControl: Snapshot的设置参数
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetSnapInfo(HVGigE_SnapControl_i* psSnapControl, int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetSnapInfo
+	* Description: 设置Snapshot参数信息
+	* Format:
+	*     HRESULT API_HV_SetSnapInfo(HVGigE_SnapControl_i sSnap, int nDevId)
+	* Params:
+	*	  HVGigE_SnapControl_i sSnap: 将要设置的Snapshot的参数
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetSnapInfo(HVGigE_SnapControl_i sSnap, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetSnapDebounceTime()
+	* Description: 设置拍照模式时，去抖动时间(DebouncerTime)，时间单位为us.
+	* Format:
+	*     HRESULT API_HV_SetSnapDebounceTime(LONG lDebouncerTime,int nDevId)
+	* Params:
+	*	 LONG lDebouncerTime: 去抖动时间，单位为us
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetSnapDebounceTime(LONG lDebouncerTime,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetSnapDebounceTime()
+	* Description: 获取拍照模式时，去抖动时间(DebouncerTime)，时间单位为us.
+	* Format:
+	*     LONG API_HV_GetSnapDebounceTime(LONG *plDebouncerTime,int nDevId)
+	* Params:
+	*	  LONG lDebouncerTime: 返回去抖动时间，单位为us
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetSnapDebounceTime(LONG *plDebouncerTime,int nDevId);
+
+
+
+	/******************************************************************************
+	* Function:	API_HV_SetSnapExpTime()
+	* Description: 设这拍照模式时，曝光时间(ExposureTime)，时间单位为us.
+	* Format:
+	*     API_HV_SetSnapExpTime(LONG lExpTime,int nDevId)
+	* Params:
+	*	  LONG lExpTime：曝光时间，单位为us
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetSnapExpTime(LONG lExpTime,int nDevId);
+
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetSnapExpTime()
+	* Description: 获得拍照模式时，曝光时间(ExposureTime)，时间单位为us.
+	* Format:
+	*     LONG API_HV_GetSnapExpTime(LONG* plExpTime,int nDevId) 
+	* Params:
+	*	 LONG* plExpTime：返回曝光时间，单位为微秒
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetSnapExpTime(LONG* plExpTime,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetSnapExpTimeRange(HVGigE_Range_i* psRange)
+	* Description: 设置拍照模式时，曝光时间(ExposureTime)的有效值范围.时间单位为us.
+	* Format:
+	*     HResult API_HV_GetSnapExpTimeRange(HVGigE_Range_i* psRange,int nDevId)
+	* Params:
+	*	 HVGigE_Range_i* psRange：返回曝光时间有效值的范围，单位为微秒
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetSnapExpTimeRange(HVGigE_Range_i* psRange,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetTrigFreqRange(HVGigE_Range_i* psRange,int nDevId)
+	* Description: 设置拍照模式时，触发频率的有效值范围.
+	* Format:
+	*     HResult API_HV_GetTrigFreqRange(HVGigE_Range_i* psRange,int nDevId)
+	* Params:
+	*	 HVGigE_Range_i* psRange：设置拍照模式时，触发频率的有效值范围
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetTrigFreqRange(HVGigE_Range_i* psRange,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetTrigImgCountRange(HVGigE_Range_i* psRange)
+	* Description: 设置拍照模式时，触发频率的有效值范围.
+	* Format:
+	*     HResult API_HV_GetTrigImgCountRange(HVGigE_Range_i* psRange,int nDevId)
+	* Params:
+	*	 HVGigE_Range_i* psRange：设置拍照模式时，连续拍照张数的有效值范围
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetTrigImgCountRange(HVGigE_Range_i* psRange,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetSnapTrigFreqImgCount()
+	* Description: 设置拍照模式时，触发的频率以及每次触发输出的图像张数
+	* Format:
+	*     HRESULT API_HV_SetSnapTrigFreqImgCount(LONG lTrigFreq, LONG lTrigImgCount,int nDevId)
+	* Params:
+	*	 LONG lTrigFreq: 设置拍照模式时，(闪光灯）的触发频率。单位为每秒的帧数。
+	*    LONG lTrigImgCount：触发一次，连续输出的图像帧数
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_SetSnapTrigFreqImgCount(LONG lTrigFreq, LONG lTrigImgCount,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetSnapTrigFreqImgCount()
+	* Description: 返回拍照模式时，触发的频率以及每次触发输出的图像张数
+	* Format:
+	*     HRESULT API_HV_GetSnapTrigFreqImgCount(LONG* plTrigFreq, LONG* plTrigImgCount,int nDevId)
+	* Params:
+	*	 LONG* plTrigFreq: 设置拍照模式时，(闪光灯）的触发频率。单位为每秒的帧数。
+	*    LONG* plTrigImgCount：触发一次，连续输出的图像帧数
+	* Return:
+	*	   API_HV_SUCCESS: 成功设置Exposure的值；
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetSnapTrigFreqImgCount(LONG* plTrigFreq, LONG* plTrigImgCount,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	void API_HV_SaveParaToIniFile()
+	* Description: 将参数保存到ini文件
+	* Format:
+	*     HRESULT API_HV_SaveParaToIniFile(int nDevId)
+	* Params:
+	*	  none
+	* Return: 
+	*     void
+	******************************************************************************/
+
+	HRESULT  API_HV_SaveParaToIniFile(int nDevId);
+
+	/******************************************************************************
+	* Function:	void API_HV_IniCamFromIniFile()
+	* Description: 使用ini文件中的参数，配置相机
+	* Format:
+	*     HRESULT API_HV_IniCamFromIniFile(int  nDevId)
+	* Params:
+	*	  none
+	* Return: 
+	*     void
+	******************************************************************************/
+
+	HRESULT  API_HV_IniCamFromIniFile(int nDevId,LPCSTR lpFileName = NULL);
+
+	/******************************************************************************
+	* Function:	API_HV_SetSnapIOMode()
+	* Description: 设置拍照模式(snapshot)下，相机IO控制模式；
+	* Format:
+	*     HRESULT API_HV_SetSnapIOMode(HVGigE_SnapIO_Mode_i sSnapIOMode)
+	* Params:
+	*		sSnapIOMode.nInMode:  0 for falling-edge valid trigger; 
+	*							  1 for rising-edge valide trigger;
+	*							  2 for low-level valid trigger;
+	*							  3 for high-level valid trigger;
+	*		sSnapIOMode.nOutMode: 0 for low-level output;
+	*							  1 for high-level output;  
+	*
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+
+	HRESULT  API_HV_SetSnapIOMode(HVGigE_SnapIO_Mode_i sSnapIOMode,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetSnapIOMode()
+	* Description: 返回拍照模式(snapshot)下，相机IO控制模式；
+	* Format:
+	*     HRESULT API_HV_GetSnapIOMode(HVGigE_SnapIO_Mode_i* psSnapIOMode,int nDevId)
+	* Params:
+	*		psSnapIOMode->nInMode:  0 for falling-edge valid trigger; 
+	*								1 for rising-edge valide trigger;
+	*								2 for low-level valid trigger;
+	*								3 for high-level valid trigger;
+	*		psSnapIOMode->nOutMode: 0 for low-level output;
+	*								1 for high-level output;  
+	*
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+
+	HRESULT  API_HV_GetSnapIOMode(HVGigE_SnapIO_Mode_i* psSnapIOMode,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetRawData(HVGigE_Img_i* pRawFrameInfo)
+	* Description: 返回RawData数据；
+	* Format:
+	*     HRESULT API_HV_GetRawData(HVGigE_Img_i* pRawFrameInfo,int nDevId)
+	* Params:
+	*		HVGigE_Img_i* pRawFrameInfo:  RawData 信息
+	*		pRawFrameInfo->nImgHeight: 图像的高
+	*		pRawFrameInfo->nImgWidth：图像的宽
+	*		pRawFrameInfo->nBitCount：每个图像像素所占的字节数, 值为1
+	*		pRawFrameInfo->pDataBuffer：指向RawData 图像数据Buffer的指针	
+	*
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_GetRawData(HVGigE_Img_i* pRawFrameInfo,int nDevId);
+
+
+	/*****************************************************************************
+	* Function:	API_HV_GetRGBData(HVGigE_Img_i* pRGBFrameInfo)
+	* Description: 返回RGB数据；
+	* Format:
+	*     HRESULT API_HV_GetRGBData(HVGigE_Img_i* pRGBFrameInfo,int nDevId)
+	* Params:
+	*		HVGigE_Img_i* pRawFrameInfo:  RawData 信息
+	*		pRGBFrameInfo->nImgHeight: 图像的高
+	*		pRGBFrameInfo->nImgWidth：图像的宽
+	*		pRGBFrameInfo->nBitCount：每个图像像素所占的字节数，值为3
+	*		pRGBFrameInfo->pDataBuffer：指向RGB图像数据Buffer的指针	
+	*
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_GetRGBData(HVGigE_Img_i* pRGBFrameInfo,int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_SnapSWTrigger()
+	* Description: Snapshot模式时，单击 sw Trigger(软件触发)的响应函数
+	* Format:
+	*     void API_HV_SnapSWTrigger()
+	* Params:
+	*     void
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	*     API_HV_UNSUCCESS: 失败
+	******************************************************************************/
+	HRESULT 	API_HV_SnapSWTrigger(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_CloseDevice
+	* Description: 关闭相机并释放资源
+	* Format:
+	*     HRESULT API_HV_CloseDevice(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     void
+	******************************************************************************/
+	void  API_HV_CloseDevice(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetROI
+	* Description: 设置视频的ROI(Region of Interest)
+	* Format:
+	*      HRESULT API_HV_SetROI(int Original_x, int Original_y,
+	*						int nImgWidth, int nImgHeight,int nDevId)
+	* Params:
+	*	  int Oringination_x: ROI的起始点x坐标
+	*	  int Oringination_y: ROI的起始点y坐标
+	*     int nImgWidth: ROI的宽度
+	*     int nImgHeight: ROI的高度
+	*     int nDevId: 设备索引号
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_SetROI(int Original_x, int Original_y, 
+											  int nImgWidth, int nImgHeight,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetROI
+	* Description: 获取视频的ROI(Region of Interest)
+	* Format:
+	*      HRESULT API_HV_GetROI(int Original_x, int Original_y,
+	*						int nImgWidth, int nImgHeight,int nDevId)
+	* Params:
+	*	  int nStart_x: 获取ROI的起始点x坐标
+	*	  int nStart_y: 获取ROI的起始点y坐标
+	*     int nImgWidth: 获取ROI的宽度
+	*     int nImgHeight: 获取ROI的高度
+	*     int nDevId: 设备索引号
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT  API_HV_GetROI(int &nStart_x, int &nStart_y, 
+											  int &nImgWidth, int &nImgHeight,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetResolutionMode
+	* Description: 设置分辨率模式
+	* Format:
+	*     HRESULT API_HV_SetResolutionMode(HVGige_Resolution Res_Mode, int nDevId) ;
+	* Params:
+	*     HVGige_Resolution Res_Mode 分辨率模式
+	*	  int nDevId  设备索引号
+	* Return: 
+	*     API_HV_SUCCESS  成功
+	******************************************************************************/
+	HRESULT  API_HV_SetResolutionMode(HVGige_Resolution Res_Mode, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetPacketSize
+	* Description: 设置sGain.nValue[0:4]的值
+	* Format:
+	*     HRESULT API_HV_SetPacketSize(int nPacketSize,int nDevId)
+	* Params:
+	*	   int nPacketSize   设置包大小
+	*	   int nDevId   设备索引
+	* Return:
+	*      API_HV_DEVICE_CONNECT_TIMEOUT:链接超时；
+	*	   API_HV_SUCCESS: 成功设置包大小；   
+	******************************************************************************/
+
+	HRESULT  API_HV_SetPacketSize(int nPacketSize,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetGrrMode_ExpFlash()
+	* Description: 设置Drr模式下的曝光时间与控制闪光灯灭的延迟时间
+	* Format:
+	*     HRESULT API_HV_SetGrrMode_ExpFlash(long lExposureTime, long lFlashDelayTime, int nDevId)
+	* Params:
+	*     long lExposureTime : Grr 模式下的曝光时间 （单位us）
+	*     long lFlashDelayTime ： 闪光灯灭的延时时间（单位us）
+	*	  int nDevId : 相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功   API_HV_UNSUCCESS：不成功，没有设置Grr模式
+	******************************************************************************/
+
+	HRESULT  API_HV_SetGrrMode_ExpFlash(long lExposureTime, long lFlashDelayTime, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetImageChannel
+	* Description: 获取图像的通道数，为1或者3
+	* Format:
+	*     HRESULT API_HV_GetImageChannel(int& nChannel,int nDevId)
+	* Params:
+	*	  int& nBitCount: 图像通道数的返回值
+	* Return:
+	*	   API_HV_SUCCESS: 成功
+	*      API_HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+
+	HRESULT  API_HV_GetImageChannel(int& nChannel,int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetImageDataType
+	* Description: 设置相机输出的图像格式
+	* Format:
+	*     HRESULT API_HV_SetImageDataMode(int nDevId) ;
+	* Params:
+	*     void
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+
+	HRESULT  API_HV_SetImageDataType(int nDevId, int nImgDataType);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetCameraType()
+	* Description: 得到当前相机型号(Camera Type),如：HV130GM等
+	* Format:
+	*     int API_HV_GetCameraType(int nDevId)
+	* Params:
+	*     int nDevId  设备索引
+	* Return: 
+	*     成功：返回Camera Type，否则返回0
+	******************************************************************************/
+	CAMERA_TYPE  API_HV_GetCameraType(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetBrightnessFactor()
+	* Description: 设置相机亮度
+	* Format:
+	*     API_HV_SetBrightnessFactor(float Brightness, int nDevId)
+	* Params:
+	*	  float Brightness		亮度        有效范围(-1,1]  
+	*     int nDevId  设备索引
+	* Return: 
+	*     成功：return API_HV_SUCCESS; 若输入值超出范围则默认为-0.94和1
+	******************************************************************************/
+	HRESULT  API_HV_SetBrightnessFactor(float Brightness, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetBrightnessFactor()
+	* Description: 获取当前相机亮度值
+	* Format:
+	*     API_HV_GetBrightnessFactor(float &Brightness, int nDevId)
+	* Params:
+	*	  float &Brightness		亮度        有效范围(-1,1]  
+	*     int nDevId  设备索引
+	* Return: 
+	*     成功：return API_HV_SUCCESS; 
+	******************************************************************************/
+	HRESULT  API_HV_GetBrightnessFactor(float &Brightness, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetContrastFactor()
+	* Description: 设置相机对比度
+	* Format:
+	*     API_HV_SetContrastFactor(float Constrast, int nDevId)
+	* Params:
+	*	  float Constrast       对比度		有效范围(-1,1]
+	*     int nDevId  设备索引
+	* Return: 
+	*     成功：return API_HV_SUCCESS; 若输入值超出范围则默认为-0.94和1
+	******************************************************************************/
+	HRESULT  API_HV_SetContrastFactor(float Constrast, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetContrastFactor()
+	* Description: 设置相机对比度
+	* Format:
+	*     API_HV_GetContrastFactor(float &Constrast, int nDevId)
+	* Params:
+	*	  float Constrast       对比度		有效范围(-1,1]
+	*     int nDevId  设备索引
+	* Return: 
+	*     成功：return API_HV_SUCCESS; 若输入值超出范围则默认为-0.94和1
+	******************************************************************************/
+	HRESULT  API_HV_GetContrastFactor(float &Constrast, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_AKeyWhiteBalance()
+	* Description: 一键白平衡
+	* Format:
+	*     API_HV_AKeyWhiteBalance(int nDevId)
+	* Params:
+	*     int nDevId  设备索引
+	* Return: 
+	*     成功：return API_HV_SUCCESS; 注：只针对彩色相机
+	******************************************************************************/
+	HRESULT  API_HV_AKeyWhiteBalance(int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetUserDefNum()
+	* Description: 设置用户自定义序列号
+	* Format:
+	*     HRESULT API_HV_SetUserDefNum(LPSTR lpSeriesNum,int nDevId)
+	* Params:
+	*     LPCSTR lpSeriesNum : 返回用户自定义序列号
+	*	  int nDevId : 相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_SetUserDefNum(LPSTR lpSeriesNum, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetUserDefNum()
+	* Description: 获取用户自定义序列号
+	* Format:
+	*     HRESULT API_HV_GetUserDefNum(LPSTR lpSeriesNum,int nDevId)
+	* Params:
+	*     LPCSTR lpSeriesNum : 返回用户设定序列号
+	*	  int nDevId : 相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT  API_HV_GetUserDefNum(LPSTR lpSeriesNum, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetGPIOMode(int nMode, int nDevId)
+	* Description: 选择GPIO输出类型
+	* Format:
+	*     HRESULT  API_HV_SetGPIOMode(int nMode, int nDevId)
+	* Params:
+	*     int nValue   0为输出闪光灯模式，1为PC控制输出模式
+	*     int nDevId   相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	*     API_HV_UNSUCCESS: 失败
+	*     API_HV_INVALID_PARAM: 无效参数
+	******************************************************************************/
+	HRESULT 	API_HV_SetGPIOMode(int nMode, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_SetGPIOValue(bool bValue, int nDevId)
+	* Description: 选择GPIO输出类型
+	* Format:
+	*     HRESULT  API_HV_SetGPIOValue(bool bValue, int nDevId)
+	* Params:
+	*     bool bValue   False为断开，True为接通，当API_HV_GPIOMode 选为闪光灯（值为0）模式时，该函数无效
+	*     int nDevId   相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	*     API_HV_UNSUCCESS: 失败
+	******************************************************************************/
+	HRESULT 	API_HV_SetGPIOValue(bool bValue, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetTriggerCount()
+	* Description: 获取触发计数
+	* Format:
+	*     HRESULT  API_HV_GetTriggerCount(int &nTrigCount, bool bReset, int nDevId)
+	* Params:
+	*     int &nTrigCount   返回触发计数值（包含软触发及硬件触发）
+	*     bool bReset    为True时，重置计数器
+	*     int nDevId   相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+	HRESULT 	API_HV_GetTriggerCount(int &nTrigCount, bool bReset, int nDevId);
+
+	/******************************************************************************
+	* Function:	API_HV_GetMaxFrameRate()
+	* Description: 获取当前相机能够输出的最大帧率
+	* Format:
+	*     HRESULT  API_HV_GetMaxFrameRate(int &nMaxFrameRate, int nDevId)
+	* Params:
+	*     int &nMaxFrameRate			获取当前相机最大帧率
+	*     int nDevId					相机索引号
+	* Return: 
+	*     API_HV_SUCCESS:					成功
+	*     API_HV_FEATURE_NOT_SUPPORT		不支持该特性
+	*	  API_HV_SEND_PACKET_FAIL			发送数据包失败
+	******************************************************************************/
+	HRESULT 	API_HV_GetMaxFrameRate(int &nMaxFrameRate, int nDevId);
+
+
+	/******************************************************************************
+	* Function:	API_HV_GetFatorySeriesNum()
+	* Description: 获取相机出厂序列号
+	* Format:
+	*     HRESULT API_HV_GetFatorySeriesNum(LPSTR lpSeriesNum,int nDevId)
+	* Params:
+	*     LPCSTR lpSeriesNum : 返回用户设定序列号
+	*	  int nDevId : 相机索引号
+	* Return: 
+	*     API_HV_SUCCESS: 成功
+	******************************************************************************/
+
+	HRESULT  API_HV_GetFatorySeriesNum(LPSTR lpSeriesNum, int nDevId);
+
+	/******************************************************************************
+	* Function:	HV_SetSpecialROI
+	* Description: 设置视频的ROI(Region of Interest)
+	* Format:
+	*      HRESULT HV_SetSpecialROI(int Offset_x1, int Offset_y1, int nWidth1, int nHeight1,
+	*								int Offset_x2, int Offset_y2, int nWidth2, int nHeight2,int nDevId)
+	* Params:
+	*	  int Offset_x1: 第一个ROI的起始点x坐标
+	*	  int Offset_y1: 第一个ROI的起始点y坐标
+	*     int nWidth1: 第一个ROI的宽度
+	*     int nHeight1: 第一个ROI的高度
+	*	  int Offset_x2: 第二个ROI的起始点x坐标
+	*	  int Offset_y2: 第二个ROI的起始点y坐标
+	*     int nWidth2: 第二个ROI的宽度
+	*     int nHeight2: 第二个ROI的高度
+	*     int nDevId: 设备索引号
+	* Return:
+	*	   HV_SUCCESS: 成功
+	*      HV_NO_SUCH_DEVICE: 没有找到对应的硬件设备
+	******************************************************************************/
+	HRESULT API_HV_SetSpecialROI(int Offset_x1, int Offset_y1, int nWidth1, int nHeight1,
+		int Offset_x2, int Offset_y2, int nWidth2, int nHeight2,int nDevId);
+
+	//监控记录
+	void GetOrder(std::vector<CString>& orderList);
+	void WriteOrder(CString order);
+
+protected:
+	void APIDev_Lock();
+	void APIDev_Unlock();
+
+	CCriticalSection m_CCriticalSection;
+
+public:
+	bool m_bIsAdd;
+    CDeviceOrderInfo    m_HVDevOrderInfo;                      //整个的信息存储
+	LONGLONG tempTimeIn[500];
+	LONGLONG tempTimeOut[500];
+
+public:
+	static bool g_init;
+	static bool init();
+	static std::vector<CDevHV*> m_ObjMnger1D;
+};
+
+#endif //SCVDEV_USE_HV
+
+#endif //_DEV_API_HV_SMCVVEDIO_H_

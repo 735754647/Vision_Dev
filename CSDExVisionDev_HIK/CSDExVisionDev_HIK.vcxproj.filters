@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="无关">
+      <UniqueIdentifier>{f3205468-2c20-4168-93f5-d8fdee9a426d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HIK实现">
+      <UniqueIdentifier>{325bcc69-9409-41c0-9e79-59b56591c772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HIK实现\HIK自带接口">
+      <UniqueIdentifier>{953dc52a-085d-4f1e-98a0-dc2f7541960d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HIK实现\封装">
+      <UniqueIdentifier>{b2aa77a2-fc9d-48cd-9631-0c921a8166e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="接口与实现">
+      <UniqueIdentifier>{168242e5-f916-4c9e-b299-3c441f9a8b61}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="CSDVisionDev.def">
+      <Filter>无关</Filter>
+    </None>
+    <None Include="res\CSDVisionDev.rc2">
+      <Filter>无关</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dev_HIK.cpp">
+      <Filter>HIK实现\封装</Filter>
+    </ClCompile>
+    <ClCompile Include="DevHIKUser.cpp">
+      <Filter>HIK实现\封装</Filter>
+    </ClCompile>
+    <ClCompile Include="CSDExVisionDev_HIK.cpp">
+      <Filter>接口与实现</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>无关</Filter>
+    </ClCompile>
+    <ClCompile Include="CSDVisionDev.cpp">
+      <Filter>无关</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceOrderInfo.cpp">
+      <Filter>HIK实现\封装</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\CameraParams.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\MvCameraControl.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\MvDeviceBase.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\MvErrorDefine.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\MvGigEDevice.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\MvInclude.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\MvUsb3VDevice.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\PixelType.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\Dev_HIK\Includes\TlFactory.h">
+      <Filter>HIK实现\HIK自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HIK.h">
+      <Filter>HIK实现\封装</Filter>
+    </ClInclude>
+    <ClInclude Include="DevHIKUser.h">
+      <Filter>HIK实现\封装</Filter>
+    </ClInclude>
+    <ClInclude Include="CSDExVisionDev_HIK.h">
+      <Filter>接口与实现</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev.h">
+      <Filter>接口与实现</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\DeviceOrderInfo.h">
+      <Filter>HIK实现\封装</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vision_Dev\CSDExVisionDev_HIK\targetver.h">
+      <Filter>无关</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>无关</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>无关</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>无关</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HIK_Lib.h">
+      <Filter>HIK实现\封装</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CSDVisionDev.rc">
+      <Filter>无关</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="无关">
+      <UniqueIdentifier>{242939e4-380b-4cb1-a85f-69e97445f42d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="无关\头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="无关\源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="无关\资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="接口与实现">
+      <UniqueIdentifier>{89a601e8-80ec-4333-84be-a54a649080a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="华用实现">
+      <UniqueIdentifier>{c09d066d-28bd-4c7d-8a2f-0bfdc7817948}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="华用实现\华用自带接口">
+      <UniqueIdentifier>{a69b1f6e-3731-4255-be75-23adcb0b6bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="华用实现\类封装接口">
+      <UniqueIdentifier>{146d2bb7-b4ab-4221-95d3-fa12a67223b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="指令存储">
+      <UniqueIdentifier>{2b81d541-cc2d-49dc-abbe-c8c7fac134a1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CSDVisionDev.def">
+      <Filter>无关\源文件</Filter>
+    </None>
+    <None Include="res\CSDVisionDev.rc2">
+      <Filter>无关\资源文件</Filter>
+    </None>
+    <None Include="ReadMe.txt">
+      <Filter>无关</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CSDVisionDev.cpp">
+      <Filter>无关\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>无关\源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Dev_HV\Dev_HV.cpp">
+      <Filter>华用实现\类封装接口</Filter>
+    </ClCompile>
+    <ClCompile Include="Dev_HV\DevHVUser.cpp">
+      <Filter>华用实现\类封装接口</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceOrderInfo.cpp">
+      <Filter>指令存储</Filter>
+    </ClCompile>
+    <ClCompile Include="CSDExVisionDev_HV.cpp">
+      <Filter>接口与实现</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>无关\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>无关\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>无关\头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\Dev_HV_inlcude\HVGigE_WP.h">
+      <Filter>华用实现\华用自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\Dev_HV_inlcude\HVGigE_Err.h">
+      <Filter>华用实现\华用自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\Dev_HV_inlcude\HVGigE_WP_def.h">
+      <Filter>华用实现\华用自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\Dev_HV_inlcude\LabVIEW.h">
+      <Filter>华用实现\华用自带接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\DevHVUser.h">
+      <Filter>华用实现\类封装接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\Dev_HV.h">
+      <Filter>华用实现\类封装接口</Filter>
+    </ClInclude>
+    <ClInclude Include="Dev_HV\Dev_HV_Lib.h">
+      <Filter>华用实现\类封装接口</Filter>
+    </ClInclude>
+    <ClInclude Include="CSDVisionDev.h">
+      <Filter>无关\源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceOrderInfo.h">
+      <Filter>指令存储</Filter>
+    </ClInclude>
+    <ClInclude Include="CSDExVisionDev_HV.h">
+      <Filter>接口与实现</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CSDExVisionDev.h">
+      <Filter>接口与实现</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CSDVisionDev.rc">
+      <Filter>无关\资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
